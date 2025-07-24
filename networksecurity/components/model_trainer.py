@@ -8,6 +8,7 @@ from sklearn.metrics import r2_score
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import (AdaBoostClassifier,GradientBoostingClassifier,RandomForestClassifier)
+from networksecurity.utils.ml_utils.model.estimator import NetworkModel
 class ModelTrainer:
     def __init__(self, model_trainer_config:ModelTrainerConfig, data_transformation_artifact:DataTransformationArtifact):
         try:
@@ -68,6 +69,19 @@ class ModelTrainer:
         y_test_pred=best_model.predict(x_test)
 
         classification_test_metric=get_classification_score(y_true=y_test , y_pred=y_test_pred)
+        
+        ## calling preprocessor.pkl wali file
+        preprocessor=load_object(file_path=self.data_transformation_artifact.transformed_object_file)
+        
+        ## making file where model.pkl will be saved
+        model_dir_path=os.path.dirname(self.model_trainer_config.trained_model_file_path)
+        os.makedirs(model_dir_path , exist_ok=True)
+
+        Network_model=NetworkModel(preprocessor=preprocessor , model=best_model)
+        save_object(self.model_trainer_config.trained_model_file_path , obj=NetworkModel)
+
+        save_object('final_models/model.pkl',best_model)
+
 
         model_trainer_artifact=ModelTrainerArtifact(
             trained_model_file_path=self.model_trainer_config.trained_model_file_path,

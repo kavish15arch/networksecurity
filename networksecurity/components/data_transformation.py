@@ -61,7 +61,10 @@ class DataTransformation:
             ## saving the numoy arrays
             save_as_numpy_array(self.data_transforamtion_config.transformed_train_file_path , array=train_arr)
             save_as_numpy_array(self.data_transforamtion_config.transformed_test_file_path , array=test_arr)
-            save_as_numpy_array(self.data_transforamtion_config.transformed_object_file_path , array=preprocessing_obj)
+            save_object(file_path=self.data_transforamtion_config.transformed_object_file_path, obj=preprocessing_obj)
+
+            save_object('final_models/preprocesror.pkl' , preprocessing_obj)
+
 
             ## creating the artifacts
             data_transformation_artifacts=DataTransformationArtifact(self.data_transforamtion_config.transformed_object_file_path , self.data_transforamtion_config.transformed_train_file_path,self.data_transforamtion_config.transformed_test_file_path)

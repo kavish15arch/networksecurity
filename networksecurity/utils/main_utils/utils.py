@@ -35,24 +35,21 @@ def save_as_numpy_array(file_path,array):
     except Exception as e:
         raise e
     
-def save_object(file_path , obj):
-    try:
-        os.makedirs(os.path.dirname(file_path) , exist_ok=True)
-        with open(file_path  , 'wb') as file:
-            pickle.dump(obj , file)
-    except Exception as e:
-        raise e
+def save_object(file_path, obj):
+    os.makedirs(os.path.dirname(file_path), exist_ok=True)
+    joblib.dump(obj, file_path)
+ 
     
-def load_object(file_path ):
-    try:
-        if not os.path.exists(file_path):
-            raise Exception(f'the file {file_path} does not exist')
-        with open(file_path , 'rb') as file:
-            
-            return pickle.load(file)# pickle .load is used to open the pickle file into the form of pyrhon dicttionary
+import joblib
+import os
+
+def load_object(file_path):
+    if not os.path.exists(file_path):
+        raise Exception(f"The file {file_path} does not exist")
+    return joblib.load(file_path)
+
        
-    except Exception as e:
-        raise e
+    
     
 
 def load_numpy_array_data(file_path):
